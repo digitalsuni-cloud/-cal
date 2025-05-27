@@ -1,0 +1,297 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>% 🧮</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #7C3AED;
+            --primary-hover: #6D28D9;
+            --background: #0F172A;
+            --surface: #1E293B;
+            --text: #F8FAFC;
+            --text-secondary: #94A3B8;
+            --success: #10B981;
+            --error: #EF4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: var(--surface);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #7C3AED, #3B82F6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .calculator-grid {
+            display: grid;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .calc-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            backdrop-filter: blur(10px);
+        }
+
+        .calc-card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .input-wrapper {
+            position: relative;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+            font-size: 1rem;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+        }
+
+        .calculate-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .calculate-btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            font-size: 1.1rem;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .result.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .result.success {
+            border-left: 4px solid var(--success);
+        }
+
+        .result.error {
+            border-left: 4px solid var(--error);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .input-group {
+                flex-direction: column;
+            }
+
+            .input-wrapper {
+                width: 100%;
+            }
+
+            .calculate-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Percentage Calculator</h1>
+        </div>
+
+        <div class="calculator-grid">
+            <div class="calc-card">
+                <h2>Percentage of a Number</h2>
+                <div class="input-group">
+                    <div class="input-wrapper">
+                        <input type="text" id="percent1" placeholder="Enter percentage" autocomplete="off">
+                    </div>
+                    <span>of</span>
+                    <div class="input-wrapper">
+                        <input type="text" id="value1" placeholder="Enter value" autocomplete="off">
+                    </div>
+                    <button class="calculate-btn" onclick="calculate('f1')">Calculate</button>
+                </div>
+                <div class="result" id="result1"></div>
+            </div>
+
+            <div class="calc-card">
+                <h2>Percentage Between Numbers</h2>
+                <div class="input-group">
+                    <div class="input-wrapper">
+                        <input type="text" id="value2" placeholder="First value" autocomplete="off">
+                    </div>
+                    <span>is what % of</span>
+                    <div class="input-wrapper">
+                        <input type="text" id="value3" placeholder="Second value" autocomplete="off">
+                    </div>
+                    <button class="calculate-btn" onclick="calculate('f2')">Calculate</button>
+                </div>
+                <div class="result" id="result2"></div>
+            </div>
+
+            <div class="calc-card">
+                <h2>Percentage Change</h2>
+                <div class="input-group">
+                    <span>From</span>
+                    <div class="input-wrapper">
+                        <input type="text" id="value4" placeholder="Initial value" autocomplete="off">
+                    </div>
+                    <span>to</span>
+                    <div class="input-wrapper">
+                        <input type="text" id="value5" placeholder="Final value" autocomplete="off">
+                    </div>
+                    <button class="calculate-btn" onclick="calculate('f3')">Calculate</button>
+                </div>
+                <div class="result" id="result3"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculate(formId) {
+            let value1, value2, result, resultElement;
+            
+            switch(formId) {
+                case 'f1':
+                    value1 = parseFloat(document.getElementById('percent1').value.replace(',', '.'));
+                    value2 = parseFloat(document.getElementById('value1').value.replace(',', '.'));
+                    resultElement = document.getElementById('result1');
+                    break;
+                case 'f2':
+                    value1 = parseFloat(document.getElementById('value2').value.replace(',', '.'));
+                    value2 = parseFloat(document.getElementById('value3').value.replace(',', '.'));
+                    resultElement = document.getElementById('result2');
+                    break;
+                case 'f3':
+                    value1 = parseFloat(document.getElementById('value4').value.replace(',', '.'));
+                    value2 = parseFloat(document.getElementById('value5').value.replace(',', '.'));
+                    resultElement = document.getElementById('result3');
+                    break;
+            }
+
+            if (isNaN(value1) || isNaN(value2)) {
+                showResult(resultElement, "Please enter valid numbers", false);
+                return;
+            }
+
+            switch(formId) {
+                case 'f1':
+                    result = (value1 / 100) * value2;
+                    showResult(resultElement, `${value1}% of ${value2} = ${result.toFixed(2)}`, true);
+                    break;
+                case 'f2':
+                    result = (value1 / value2) * 100;
+                    showResult(resultElement, `${value1} is ${result.toFixed(2)}% of ${value2}`, true);
+                    break;
+                case 'f3':
+                    result = ((value2 - value1) / value1) * 100;
+                    showResult(resultElement, `Percentage change: ${result.toFixed(2)}%`, true);
+                    break;
+            }
+        }
+
+        function showResult(element, text, isSuccess) {
+            element.textContent = text;
+            element.className = 'result';
+            
+            // Force reflow
+            void element.offsetWidth;
+            
+            element.classList.add('show');
+            element.classList.add(isSuccess ? 'success' : 'error');
+        }
+
+        // Add input validation
+        document.querySelectorAll('input[type="text"]').forEach(input => {
+            input.addEventListener('input', (e) => {
+                e.target.value = e.target.value.replace(/[^\d.,\-]/g, '');
+            });
+        });
+    </script>
+</body>
+</html>
